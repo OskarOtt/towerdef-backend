@@ -21,4 +21,4 @@ Per-IP rate limits (in-memory, per minute): start 10, submit 5, read 60. Plausib
 Same pipeline as dogtrainer-backend: `.github/workflows/deploy.yml` builds/tests, pushes `ghcr.io/<repo>:latest`, copies `k8s/` to the MicroK8s host and rolls out. Schema is managed by Liquibase (`db/changelog`).
 Required GitHub secrets: `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`. Create once in the cluster:
 `kubectl create secret generic towerdef-backend-secret --from-literal=DATABASE_URL=jdbc:postgresql://... --from-literal=DATABASE_USER=... --from-literal=DATABASE_PASSWORD=... --from-literal=TOWERDEF_SECRET=$(openssl rand -hex 32)`
-Also needs the existing `ghcr-secret`. Ingress host `towerdef-api.oskott.com` and image owner `oskarott` are assumptions; adjust in `k8s/`. Runs with a single replica because rate-limit buckets are in memory.
+Also needs the existing `ghcr-secret`. Ingress host `api.towerdef.io` and image owner `oskarott` are assumptions; adjust in `k8s/`. Runs with a single replica because rate-limit buckets are in memory.

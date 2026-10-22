@@ -9,10 +9,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - towerdef-api.oskott.com
+        - api.towerdef.io
       secretName: towerdef-backend-tls
   rules:
-    - host: towerdef-api.oskott.com
+    - host: api.towerdef.io
       http:
         paths:
           - path: /
