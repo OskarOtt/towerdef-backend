@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: towerdef-backend
+  labels:
+    app: towerdef-backend
+spec:
+  # Rate limiting is in-memory per pod, so keep a single replica (or move buckets to a shared store first).
+  replicas: 1
+  selector:
+    matchLabels:
+      app: towerdef-backend
+  template:
+    metadata:
+      labels:
+        app: towerdef-backend
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: towerdef-backend
+          # Image published by .github/workflows/deploy.yml on push to main
+          image: ghcr.io/oskarott/towerdef-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          # Secret must provide DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD, TOWERDEF_SECRET
+          envFrom:
+            - configMapRef:
+                name: towerdef-backend-config
+            - secretRef:
+                name: towerdef-backend-secret
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 40
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "384Mi"
+            limits:
+              cpu: "500m"
+              memory: "768Mi"

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: towerdef-backend-config
+  labels:
+    app: towerdef-backend
+data:
+  SPRING_PROFILES_ACTIVE: "prod"
+  TOWERDEF_ALLOWED_ORIGINS: "https://towerdef.io,https://www.towerdef.io"

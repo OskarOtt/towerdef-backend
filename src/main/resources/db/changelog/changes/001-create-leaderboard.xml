@@ -1,0 +1,60 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+    <changeSet id="001-create-runs" author="oskott">
+        <createTable tableName="runs">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="started_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip_hash" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="consumed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="001-create-leaderboard-entries" author="oskott">
+        <createTable tableName="leaderboard_entries">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="run_id" type="UUID">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uq_leaderboard_run"
+                             foreignKeyName="fk_leaderboard_run" references="runs(id)"/>
+            </column>
+            <column name="name" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wave" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="kills" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="top_tower_id" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="top_tower_level" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_leaderboard_rank" tableName="leaderboard_entries">
+            <column name="wave" descending="true"/>
+            <column name="kills" descending="true"/>
+            <column name="created_at"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
