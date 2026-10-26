@@ -30,15 +30,19 @@ spec:
                 name: towerdef-backend-config
             - secretRef:
                 name: towerdef-backend-secret
+          # Liveness/readiness are held off until this succeeds (up to 5 min)
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            periodSeconds: 5
+            failureThreshold: 60
           readinessProbe:
             tcpSocket:
               port: 8080
-            initialDelaySeconds: 20
             periodSeconds: 10
           livenessProbe:
             tcpSocket:
               port: 8080
-            initialDelaySeconds: 40
             periodSeconds: 20
           resources:
             requests:
