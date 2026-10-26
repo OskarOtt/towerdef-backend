@@ -1,8 +1,12 @@
 package no.oskott.towerdefbackend.leaderboard;
 
 import java.util.List;
+import java.util.UUID;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,5 +36,14 @@ public class LeaderboardController {
                     e.getAchievements());
         }
         return List.of(rows);
+    }
+
+    @GetMapping("/run/{runId}")
+    public Row placement(@PathVariable UUID runId) {
+        LeaderboardEntry e = repo.findByRunId(runId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "no_entry"));
+        int rank = (int) repo.countAhead(e.getWave(), e.getKills(), e.getCreatedAt()) + 1;
+        return new Row(rank, e.getName(), e.getWave(), e.getKills(), e.getTopTowerId(), e.getTopTowerLevel(),
+                e.getAchievements());
     }
 }

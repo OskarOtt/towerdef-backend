@@ -64,6 +64,22 @@ class LeaderboardIntegrationTest {
     }
 
     @Test
+    void placementReturnsRankOfRun() throws Exception {
+        JsonNode run = startRun();
+        String id = run.get("runId").asText();
+        mvc.perform(get("/api/leaderboard/run/" + id)).andExpect(status().isNotFound());
+
+        mvc.perform(post("/api/runs/" + id + "/score").contentType(MediaType.APPLICATION_JSON)
+                        .content(score(run.get("token").asText(), "Placed", 1)))
+                .andExpect(status().isOk());
+
+        mvc.perform(get("/api/leaderboard/run/" + id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Placed"))
+                .andExpect(jsonPath("$.rank").isNumber());
+    }
+
+    @Test
     void rejectsBadToken() throws Exception {
         JsonNode run = startRun();
         mvc.perform(post("/api/runs/" + run.get("runId").asText() + "/score")
