@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LeaderboardController {
 
     public record Row(int rank, String name, int wave, int kills, String topTowerId, int topTowerLevel,
-                      int achievements) {
+                      int achievements, int gameVersion) {
     }
 
     private final LeaderboardRepository repo;
@@ -33,7 +33,7 @@ public class LeaderboardController {
         for (int i = 0; i < rows.length; i++) {
             LeaderboardEntry e = entries.get(i);
             rows[i] = new Row(i + 1, e.getName(), e.getWave(), e.getKills(), e.getTopTowerId(), e.getTopTowerLevel(),
-                    e.getAchievements());
+                    e.getAchievements(), e.getGameVersion());
         }
         return List.of(rows);
     }
@@ -44,6 +44,6 @@ public class LeaderboardController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "no_entry"));
         int rank = (int) repo.countAhead(e.getWave(), e.getKills(), e.getCreatedAt()) + 1;
         return new Row(rank, e.getName(), e.getWave(), e.getKills(), e.getTopTowerId(), e.getTopTowerLevel(),
-                e.getAchievements());
+                e.getAchievements(), e.getGameVersion());
     }
 }

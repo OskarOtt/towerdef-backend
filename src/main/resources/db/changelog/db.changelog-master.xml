@@ -8,5 +8,6 @@
     <include file="db/changelog/changes/001-create-leaderboard.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/changes/002-run-last-submit.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/changes/003-leaderboard-achievements.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/004-leaderboard-game-version.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

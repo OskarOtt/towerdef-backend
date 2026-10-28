@@ -5,7 +5,7 @@ Spring Boot leaderboard API. Run Postgres locally: `docker compose up -d`, then 
 ## API
 1. `POST /api/runs` → `{runId, token}` — call when a game starts.
 2. `POST /api/runs/{runId}/score` — on game over. Body:
-   `{token, name (1-16 chars), wave, kills, topTowerId, topTowerLevel, achievements}` (topTowerLevel = sum of the tower's 5 upgrade levels).
+   `{token, name (1-16 chars), wave, kills, topTowerId, topTowerLevel, achievements, gameVersion (optional, defaults to 1)}` (topTowerLevel = sum of the tower's 5 upgrade levels).
    → `{rank}`. Errors: 400 invalid, 403 bad token, 409 already used, 410 expired, 422 implausible, 429 rate limited.
    A run can be submitted once; a rejected attempt also consumes it.
 3. `GET /api/leaderboard?limit=10` (max 100) → ranked by wave, kills, earliest.

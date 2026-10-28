@@ -22,7 +22,8 @@ public final class RunDtos {
             @Min(0) @Max(100_000_000) int kills,
             @NotBlank @Size(max = 32) String topTowerId,
             @Min(0) @Max(2000) int topTowerLevel,
-            @Min(0) @Max(1000) Integer achievements) {
+            @Min(0) @Max(1000) Integer achievements,
+            @Min(1) @Max(1000) Integer gameVersion) {
     }
 
     public record ScoreResponse(long rank) {

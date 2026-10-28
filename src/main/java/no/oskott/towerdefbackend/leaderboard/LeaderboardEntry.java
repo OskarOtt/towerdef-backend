@@ -38,6 +38,9 @@ public class LeaderboardEntry {
     @Column(nullable = false)
     private int achievements;
 
+    @Column(name = "game_version", nullable = false)
+    private int gameVersion = 1;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
@@ -45,13 +48,14 @@ public class LeaderboardEntry {
     }
 
     public LeaderboardEntry(UUID runId, String name, int wave, int kills, String topTowerId, int topTowerLevel,
-                            Instant createdAt) {
+                            int gameVersion, Instant createdAt) {
         this.runId = runId;
         this.name = name;
         this.wave = wave;
         this.kills = kills;
         this.topTowerId = topTowerId;
         this.topTowerLevel = topTowerLevel;
+        this.gameVersion = gameVersion;
         this.createdAt = createdAt;
     }
 
@@ -61,6 +65,10 @@ public class LeaderboardEntry {
         this.kills = kills;
         this.topTowerId = topTowerId;
         this.topTowerLevel = topTowerLevel;
+    }
+
+    public int getGameVersion() {
+        return gameVersion;
     }
 
     public int getAchievements() {

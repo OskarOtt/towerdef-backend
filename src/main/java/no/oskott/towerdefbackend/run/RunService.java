@@ -76,7 +76,7 @@ public class RunService {
         LeaderboardEntry entry = leaderboard.findByRunId(runId).orElse(null);
         if (entry == null) {
             entry = new LeaderboardEntry(runId, name, req.wave(), req.kills(), req.topTowerId(),
-                    req.topTowerLevel(), created);
+                    req.topTowerLevel(), req.gameVersion() == null ? 1 : req.gameVersion(), created);
         } else if (entry.isBetterOrEqual(req.wave(), req.kills())) {
             entry.update(name, req.wave(), req.kills(), req.topTowerId(), req.topTowerLevel());
         }
